@@ -1,0 +1,19 @@
+{
+  "name": "catepass-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo Multiplataforma para Gestión de Asistencia QR e Inscripciones de Catequesis",
+  "workspaces": [
+    "apps/web-client",
+    "apps/mobile-client",
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck:shared": "npm --workspace=@catepass/shared run typecheck",
+    "dev:web": "npm --workspace=web-client run dev",
+    "dev:mobile": "npm --workspace=mobile-client run start"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

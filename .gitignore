@@ -1,0 +1,37 @@
+# Dependencias Node / Monorepo
+node_modules/
+.pnp
+.pnp.js
+
+# Entornos virtuales de Python (Backend Monolito Modular)
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Builds de Web (Vite) y Móvil (Expo)
+dist/
+build/
+.expo/
+web-build/
+*.apk
+*.aab
+*.ipa
+
+# Variables de entorno reales (NUNCA subir claves a GitHub)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Sistema Operativo e IDEs
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.log
