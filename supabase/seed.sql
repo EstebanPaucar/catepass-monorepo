@@ -2,15 +2,18 @@
 -- CATEPASS MONOREPO - SEEDING INICIAL (Sección 3.1: Administrador Cero y Niveles)
 -- ============================================================================
 
--- 1. Inyección de los Niveles Base de Catequesis
-INSERT INTO public.niveles (id_nivel, nombre_nivel, horario, estado_activo)
+-- 1. Inyección de los 6 Niveles Oficiales de Catequesis y Horarios Reales
+INSERT INTO public.niveles (id_nivel, nombre_nivel, paralelo, horario, estado_activo)
 VALUES
-    ('11111111-1111-4111-8111-111111111101', 'Inicial / Despertar Religioso', 'Sábados 09:00 - 10:30', true),
-    ('11111111-1111-4111-8111-111111111102', 'Primero de Primera Comunión', 'Sábados 09:00 - 11:00', true),
-    ('11111111-1111-4111-8111-111111111103', 'Segundo de Primera Comunión', 'Sábados 09:00 - 11:00', true),
-    ('11111111-1111-4111-8111-111111111104', 'Primero de Confirmación', 'Sábados 15:00 - 17:00', true),
-    ('11111111-1111-4111-8111-111111111105', 'Segundo de Confirmación', 'Sábados 15:00 - 17:00', true)
-ON CONFLICT (nombre_nivel) DO NOTHING;
+    ('11111111-1111-4111-8111-111111111101', 'Inicial', 'Único', 'Sábados 14:00 - 16:00 | Misa Domingos 10:00 - 11:00', true),
+    ('11111111-1111-4111-8111-111111111102', 'Primero de Comunión', 'Único', 'Sábados 14:00 - 16:00 | Misa Domingos 10:00 - 11:00', true),
+    ('11111111-1111-4111-8111-111111111103', 'Segundo de Comunión', 'Único', 'Sábados 14:00 - 16:00 | Misa Domingos 10:00 - 11:00', true),
+    ('11111111-1111-4111-8111-111111111104', 'Año Bíblico', 'Único', 'Sábados 14:00 - 16:00 | Misa Domingos 10:00 - 11:00', true),
+    ('11111111-1111-4111-8111-111111111105', 'Primero de Confirmación', 'Único', 'Sábados 14:00 - 16:00 | Misa Domingos 10:00 - 11:00', true),
+    ('11111111-1111-4111-8111-111111111106', 'Segundo de Confirmación', 'Único', 'Sábados 14:00 - 16:00 | Misa Domingos 10:00 - 11:00', true)
+ON CONFLICT ON CONSTRAINT uq_nivel_nombre_paralelo DO UPDATE
+SET horario = EXCLUDED.horario,
+    estado_activo = EXCLUDED.estado_activo;
 
 -- 2. Inyección Segura del "Administrador Cero" (Sección 3.1)
 -- Credenciales iniciales de acceso:

@@ -32,18 +32,21 @@ DO $$ BEGIN
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 -- ============================================================================
--- 3. TABLA: niveles (Agrupaciones académicas y pastorales)
+-- 3. TABLA: niveles (Agrupaciones académicas, paralelos y horarios)
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.niveles (
     id_nivel UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    nombre_nivel VARCHAR(100) NOT NULL UNIQUE,
+    nombre_nivel VARCHAR(100) NOT NULL,
+    paralelo VARCHAR(20) NOT NULL DEFAULT 'Único',
     horario VARCHAR(120) NOT NULL,
     estado_activo BOOLEAN NOT NULL DEFAULT true,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_nivel_nombre_paralelo UNIQUE (nombre_nivel, paralelo)
 );
 
 -- ============================================================================
 -- 4. TABLA: users (IAM / Staff - Administradores y Catequistas)
+-- Nota: nivel_id permite relación N:1 (2 o más catequistas en el mismo nivel)
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.users (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
@@ -62,12 +65,13 @@ CREATE TABLE IF NOT EXISTS public.users (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Vista con edad calculada dinámicamente (Corrección D - Sección 5)
+-- Vista con edad calculada dinámicamente y datos del nivel/paralelo
 CREATE OR REPLACE VIEW public.vw_users_staff AS
 SELECT 
     u.*,
     EXTRACT(YEAR FROM AGE(CURRENT_DATE, u.fecha_nacimiento))::INT AS edad_calculada,
     n.nombre_nivel,
+    n.paralelo AS paralelo_nivel,
     n.horario AS horario_nivel
 FROM public.users u
 LEFT JOIN public.niveles n ON u.nivel_id = n.id_nivel;
