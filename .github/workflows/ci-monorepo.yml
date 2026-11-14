@@ -1,0 +1,27 @@
+name: CatePass Monorepo CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate-shared-contracts:
+    name: Validate Shared Contracts & TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Monorepo Dependencies
+        run: npm ci
+
+      - name: Typecheck Shared Package (@catepass/shared)
+        run: npm run typecheck:shared
