@@ -29,11 +29,12 @@ export interface UserStaff {
 
 /**
  * Tabla 2: Niveles
- * Agrupaciones académicas y pastorales de la catequesis.
+ * Agrupaciones académicas y pastorales de la catequesis con soporte de paralelos ('Único', 'A', 'B').
  */
 export interface NivelCatequesis {
   id_nivel: string; // UUID PK
   nombre_nivel: string;
+  paralelo: string; // 'Único' | 'A' | 'B'
   horario: string;
   estado_activo: boolean;
 }
